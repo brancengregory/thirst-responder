@@ -4,7 +4,10 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-serialport = "4.5.0"
+hyper = { version = "0.14", features = ["full"] }
+tokio = { version = "1", features = ["full"] }
+prometheus = "0.13"
+serialport = "4.0"
 
 [build-dependencies]
 cross = "0.2.5"
