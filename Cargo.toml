@@ -1,0 +1,9 @@
+[package]
+name = "thirst-responder"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[build-dependencies]
+cross = "0.2.5"
