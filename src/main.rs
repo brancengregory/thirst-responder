@@ -6,7 +6,7 @@ fn main() {
     let baud_rate = 9_600;
     
     let port = serialport::new(port_name, baud_rate)
-        .timeout(Duration::from_millis(10))
+        .timeout(Duration::from_millis(2000))
         .open();
     
     match port {
