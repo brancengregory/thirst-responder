@@ -1,4 +1,4 @@
-use prometheus::{register_gauge, Encoder, Gauge, TextEncoder};
+use prometheus::{register_gauge, Encoder, TextEncoder};
 use serialport;
 use std::io::{self, BufRead};
 use std::sync::Arc;
@@ -23,15 +23,11 @@ async fn metrics_handler(_: Request<Body>) -> Result<Response<Body>, Infallible>
     Ok(response)
 }
 
-async fn start_http_server(
-    g: Arc<Gauge>,
-    shutdown_rx: oneshot::Receiver<()>,
-) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+async fn start_http_server(shutdown_rx: oneshot::Receiver<()>) -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let addr = ([0, 0, 0, 0], 9898).into();
 
     // Create the make_service using make_service_fn
     let make_svc = make_service_fn(|_conn| {
-        let g = g.clone();
         async move {
             Ok::<_, Infallible>(service_fn(metrics_handler))
         }
@@ -84,13 +80,13 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
 
     // Start the HTTP server in a new async task with shutdown support
     let server_handle = spawn(async move {
-        start_http_server(moisture_gauge.clone(), shutdown_rx)
+        start_http_server(shutdown_rx)
             .await
             .unwrap();
     });
 
     match port {
-        Ok(mut port) => {
+        Ok(port) => {
             println!(
                 "Receiving data on {} at {} baud:",
                 &port_name, &baud_rate

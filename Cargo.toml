@@ -11,3 +11,8 @@ serialport = "4.0"
 
 [build-dependencies]
 cross = "0.2.5"
+
+
+[package.metadata.cross.target.aarch64-unknown-linux-gnu]
+image = "my-custom-aarch64-udev"
+
