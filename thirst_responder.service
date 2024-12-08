@@ -1,0 +1,14 @@
+[Unit]
+Description=Thirst Responder
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/thirst-responder
+Restart=always
+RestartSec=5
+User=
+Group=
+WorkingDirectory=/usr/local/bin/
+
+[Install]
+WantedBy=multi-user.target
